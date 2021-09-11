@@ -71,7 +71,7 @@ func DeleteHandler(rw http.ResponseWriter, r *http.Request) {
 func InitializeTransactionLog() error {
 	var err error
 
-	transactionLogger, err = transact.NewFileTransactionLogger("/tmp/transaction.log")
+	transactionLogger, err = transact.NewFileTransactionLogger("transaction.log")
 	if err != nil {
 		return fmt.Errorf("failed to create event logger: %w", err)
 	}
