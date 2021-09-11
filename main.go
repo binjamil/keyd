@@ -9,6 +9,11 @@ import (
 )
 
 func main() {
+	err := service.InitializeTransactionLog()
+	if err != nil {
+		panic(err)
+	}
+
 	r := mux.NewRouter()
 
 	r.HandleFunc("/v1/{key}", service.GetHandler).Methods(http.MethodGet)
