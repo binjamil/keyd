@@ -7,10 +7,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o keyd
 # Stage 2: Run the binary to start keyd server
 FROM scratch
 COPY --from=build /src/keyd .
-EXPOSE 8080
+# ENV GRPC_ENABLED=true
+# EXPOSE 50051
+EXPOSE 8000
 CMD ["/keyd"]
-
-# Copy .pem files and set env to enable TLS, for example:
-# COPY --from=build /src/tls/*.pem .
-# ENV TLS_CERTIFICATE="certificate.pem"
-# ENV TLS_KEY="key.pem"

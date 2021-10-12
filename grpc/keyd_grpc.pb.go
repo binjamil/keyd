@@ -20,7 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 type KeydClient interface {
 	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
 	Put(ctx context.Context, in *PutRequest, opts ...grpc.CallOption) (*PutResponse, error)
-	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*PutResponse, error)
+	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
 }
 
 type keydClient struct {
@@ -49,8 +49,8 @@ func (c *keydClient) Put(ctx context.Context, in *PutRequest, opts ...grpc.CallO
 	return out, nil
 }
 
-func (c *keydClient) Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*PutResponse, error) {
-	out := new(PutResponse)
+func (c *keydClient) Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error) {
+	out := new(DeleteResponse)
 	err := c.cc.Invoke(ctx, "/Keyd/Delete", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -64,7 +64,7 @@ func (c *keydClient) Delete(ctx context.Context, in *DeleteRequest, opts ...grpc
 type KeydServer interface {
 	Get(context.Context, *GetRequest) (*GetResponse, error)
 	Put(context.Context, *PutRequest) (*PutResponse, error)
-	Delete(context.Context, *DeleteRequest) (*PutResponse, error)
+	Delete(context.Context, *DeleteRequest) (*DeleteResponse, error)
 	mustEmbedUnimplementedKeydServer()
 }
 
@@ -78,7 +78,7 @@ func (UnimplementedKeydServer) Get(context.Context, *GetRequest) (*GetResponse, 
 func (UnimplementedKeydServer) Put(context.Context, *PutRequest) (*PutResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Put not implemented")
 }
-func (UnimplementedKeydServer) Delete(context.Context, *DeleteRequest) (*PutResponse, error) {
+func (UnimplementedKeydServer) Delete(context.Context, *DeleteRequest) (*DeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
 func (UnimplementedKeydServer) mustEmbedUnimplementedKeydServer() {}
@@ -169,5 +169,5 @@ var Keyd_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "grpc/keyd.proto",
+	Metadata: "keyd.proto",
 }

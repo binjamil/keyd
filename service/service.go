@@ -12,7 +12,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-var transactionLogger transact.TransactionLogger
+var TransactionLogger transact.TransactionLogger
 
 func GetHandler(rw http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
@@ -50,7 +50,7 @@ func PutHandler(rw http.ResponseWriter, r *http.Request) {
 	}
 
 	rw.WriteHeader(http.StatusCreated)
-	transactionLogger.WritePut(key, string(value))
+	TransactionLogger.WritePut(key, string(value))
 	log.Printf("PUT key=%s value=%s\n", key, string(value))
 }
 
@@ -64,19 +64,19 @@ func DeleteHandler(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	transactionLogger.WriteDelete(key)
+	TransactionLogger.WriteDelete(key)
 	log.Printf("DELETE key=%s\n", key)
 }
 
 func InitializeTransactionLog() error {
 	var err error
 
-	transactionLogger, err = transact.NewFileTransactionLogger("transaction.log")
+	TransactionLogger, err = transact.NewFileTransactionLogger("transaction.log")
 	if err != nil {
 		return fmt.Errorf("failed to create event logger: %w", err)
 	}
 
-	events, errors := transactionLogger.ReadEvents()
+	events, errors := TransactionLogger.ReadEvents()
 	e, ok, count := transact.Event{}, true, 0
 
 	for ok && err == nil {
@@ -96,6 +96,6 @@ func InitializeTransactionLog() error {
 	}
 
 	log.Printf("%d events replayed\n", count)
-	transactionLogger.Run()
+	TransactionLogger.Run()
 	return err
 }
